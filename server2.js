@@ -24,7 +24,7 @@ app.engine("handlebars", exphbs({ defaultLayout: "main" }));
 app.set("view engine", "handlebars");
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/pokemon");
+mongoose.connect("mongodb://heroku_z5mn2pnq:oucq5c4fg2hq7tnu78imrogopi@ds229465.mlab.com:29465/heroku_z5mn2pnq");
 var db = mongoose.connection;
 // Show any mongoose errors
 db.on("error", function(error) {
@@ -124,13 +124,13 @@ app.post("/pokemon/:id", function(req, res){
 	})
 })
 
-// app.delete("/cleardb",function(req, res){
-// 	Pokemon.remove({}).exec(function(err, doc){
-// 		if(err){
-// 			console.log(err);
-// 		}
-// 	})
-// })
+// app.delete("/cleardb", function(req, res) {
+      // 	Pokemon.remove({}).exec(function(err, doc){
+      // 		if(err){
+      // 			console.log(err);
+      // 		}
+      // 	})
+      // })
 app.delete("/remove/:id",function(req, res){
 	Pokemon.findByIdAndRemove({"_id":req.params.id}, function(err){
 		if(err){
@@ -141,9 +141,10 @@ app.delete("/remove/:id",function(req, res){
 	});
 })
 
+var PORT = process.env.PORT || 3000;
 // Listen on port 3000
 Pokemon.remove({}).then(function(){
-app.listen(3000, function() {
+app.listen(PORT, function() {
   console.log("App running on port 3000!");
 })
 });
