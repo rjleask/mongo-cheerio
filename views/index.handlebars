@@ -2,6 +2,9 @@
   <nav class="navbar navbar-default navbar-fixed-top">
   <div class="container">
     <h1>Pokemon Fan Page</h1>
+      <span class="navbar-right nav-imgs"><img src="https://png.icons8.com/pokeball/color/96" title="Pokeball" width="96" height="96"></span>
+      <span class="navbar-left nav-imgs"><img src="https://png.icons8.com/pokeball/color/96" title="Pokeball" width="96" height="96"></span>
+
       <h2><i>Don't be hasty</i></h2>
       <a class="btn btn-info" href="/pokemon" role="button">Scrape</a>
       {{!-- <a href="/pokemon"><button>Scrape</button></a> --}}
@@ -12,12 +15,15 @@
       <div id="pokemon">
         {{#each pokeData}}
         <div class="pokeBox" style="background-image: linear-gradient(to bottom, rgba(250, 250, 250, 0.7), rgba(255, 250, 250, 0.7)), url(https://img.pokemondb.net/artwork/{{this.image}}.jpg)">
-         <p id="poke-id">ID:{{this._id}}</p>
+         <p id="poke-id" style="display:none">{{this._id}}</p>
+         <p>ID:{{this.pokeId}}</p>
          <p>Name:{{this.title}}</p>
          <p>Stages:{{this.stages}}</p>
          <p>Type:{{this.pokeType}}</p>
          <p><a href={{this.link}}>View more data</a></p>
-       <button class="btn btn-default" id="#remove">Remove Pokemon</button>
+         {{!-- <p>{{this.comment.body}}</p> --}}
+       <button class="btn btn-primary edit" id={{this._id}}>Edit/View Comments</button>
+       <button class="btn btn-default remove" id="#remove">Remove Pokemon</button>
        </div>
         {{/each}}
       </div>

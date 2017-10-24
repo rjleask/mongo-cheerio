@@ -5,6 +5,7 @@ var bodyParser = require("body-parser");
 var mongoose = require("mongoose");
 // Requiring our Note and Article models
 var Pokemon = require("./models/pokedeck.js");
+var Comments = require("./models/comments.js");
 // Our scraping tools
 var exphbs = require("express-handlebars");
 var request = require("request");
@@ -53,8 +54,8 @@ app.get("/pokemon", function(req, res) {
     var $ = cheerio.load(html);
     $(".infocard-tall").each(function(i, element) {
       var result = {};
-      // scrape 10 pokemon if it doesnt contain the small class which is empty
-      if (i < 10 && $(this).hasClass("small") != true) {
+      // scrape pokemon if it doesnt contain the small class which is empty
+      if (i < 14 && $(this).hasClass("small") != true) {
         result.pokeId = $(this).children("small").first().text();
         result.title = $(this).find(".ent-name").text();
         result.image =  $(this).find(".ent-name").text().toLowerCase();
@@ -77,26 +78,61 @@ app.get("/pokemon", function(req, res) {
       }
     })
   })
-  res.send("Scraping Done!");
+  // res.send("Scraping Done!");
+  res.render("scrape");
 })
 
-// This will get the articles we scraped from the mongoDB
+// This will get the pokemon we scraped from the mongoDB
 app.get("/pokedeck", function(req, res) {
   // Grab every doc in the Pokemon array
   Pokemon.find({}, function(error, doc) {
-    // Log any errors
     if (error) {
       console.log(error);
     }
-    // Or send the doc to the browser as a json object
     else {
       res.json(doc);
     }
   });
 });
+//  get pokemon by id and show comments
+app.get("/pokemon/:id",function(req, res){
+	Pokemon.findOne({ "_id":req.params.id }).populate("comment").exec(function(err, doc){
+		if(err){
+			console.log(err);
+		}
+		else{
+			res.json(doc);
+		}
+	})
 
+})
+// post comments into database 
+app.post("/pokemon/:id", function(req, res){
+	var newComment = new Comments(req.body);
+	newComment.save(function(err, doc){
+		if(err){
+			console.log(err);
+		}else{
+			Pokemon.findOne({"_id":req.params.id}, {"comment":doc._id}).exec(function(err, doc){
+				if(err){
+					console.log(err);
+				}else{
+					res.send(doc);
+				}
+			})
+		}
+	})
+})
+
+// app.delete("/cleardb",function(req, res){
+// 	Pokemon.remove({}).exec(function(err, doc){
+// 		if(err){
+// 			console.log(err);
+// 		}
+// 	})
+// })
 app.delete("/remove/:id",function(req, res){
-	Pokemon.remove({_id:req.params.id}, function(err){
+	Pokemon.findByIdAndRemove({"_id":req.params.id}, function(err){
 		if(err){
 			console.log(err);
 		}else{
@@ -106,6 +142,8 @@ app.delete("/remove/:id",function(req, res){
 })
 
 // Listen on port 3000
+Pokemon.remove({}).then(function(){
 app.listen(3000, function() {
   console.log("App running on port 3000!");
+})
 });

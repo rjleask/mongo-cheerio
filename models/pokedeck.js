@@ -28,6 +28,10 @@ var PokemonSchema = new Schema({
   stages: {
     type: String,
     required: false
+  },
+  comment: {
+    type: Schema.Types.ObjectId,
+    ref: "Comments"
   }
 });
 // Create the Article model with the ArticleSchema

@@ -1,5 +1,8 @@
   body {
-    background-color: #F2F6D0
+    background-color: #F2F6D0;
+    background-image: url(https://images.unsplash.com/photo-1457536610610-bf4b249617c7?w=1500&ixid=dW5zcGxhc2guY29tOzs7Ozs%3D);
+    background-repeat: no-repeat;
+    background-size: cover;
   }
 
   #wrapper {
@@ -9,23 +12,12 @@
     padding-top: 5%;
   }
 
-  #articles {
-    display: inline-block;
-    overflow: auto;
-    width: 60%;
-    height: 700px;
-  }
-
-  #notes {
-    float: right;
-    width: 30%;
-  }
-
   textarea,
   input {
     display: block;
     width: 100%;
     background-color: #FCF5C7;
+    z-index: 200;
   }
 
   input {
@@ -34,7 +26,6 @@
   }
 
   textarea {
-    height: 200px;
     font-size: 18px;
   }
 
@@ -58,4 +49,24 @@
   .btn-default{
     background-color: #b30202;
     color:white;
+  }
+  .btn-primary{
+    background: #1b1717;
+  }
+  .navbar{
+    background: #000000;
+    color: white;
+  }
+  .comment-box{
+    height: 150px;
+  }
+  @media (max-width:950px){
+       #wrapper{
+        width:100%;
+       }
+  }
+  @media (max-width:770px){
+       .nav-imgs{
+        display: none;
+       }
   }
